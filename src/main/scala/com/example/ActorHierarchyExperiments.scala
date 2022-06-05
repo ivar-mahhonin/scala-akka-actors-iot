@@ -40,6 +40,6 @@ class Main(context: ActorContext[String]) extends AbstractBehavior[String](conte
 }
 
 object ActorHierarchyExperiments extends App {
-  val testSystem = ActorSystem(Main(), "testSystem")
+  val testSystem = ActorSystem(Main(), "ActorHierarchyExperiments")
   testSystem ! "start"
 }
