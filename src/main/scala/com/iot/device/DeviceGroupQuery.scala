@@ -1,4 +1,4 @@
-package com.iot
+package com.iot.device
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.AbstractBehavior
@@ -7,7 +7,7 @@ import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.scaladsl.LoggerOps
 import akka.actor.typed.{ActorRef, Signal, PostStop, PreRestart, SupervisorStrategy}
 import scala.concurrent.duration.FiniteDuration
-import com.iot.DeviceManager._
+import com.iot.device.DeviceManager._
 import akka.actor.typed.scaladsl.TimerScheduler
 
 object DeviceGroupQuery {

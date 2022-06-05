@@ -1,4 +1,4 @@
-package com.iot
+package com.iot.device
 
 import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior

@@ -1,4 +1,4 @@
-package com.iot
+package com.iot.device
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.AbstractBehavior
@@ -41,7 +41,8 @@ object DeviceManager {
   ) extends DeviceManager.Command
       with DeviceGroup.Command
 
-  final case class DeviceRegistered(device: ActorRef[Device.Command])
+  final case class DeviceRegistered(device: ActorRef[Device.Command]) extends DeviceManager.Command
+      with DeviceGroup.Command
 
   final case class RequestDeviceList(
       requestId: Long,
@@ -50,7 +51,8 @@ object DeviceManager {
   ) extends DeviceManager.Command
       with DeviceGroup.Command
 
-  final case class ReplyDeviceList(requestId: Long, ids: Set[String])
+  final case class ReplyDeviceList(requestId: Long, ids: Set[String]) extends DeviceManager.Command
+      with DeviceGroup.Command
 
   private final case class DeviceGroupTerminated(groupId: String) extends DeviceManager.Command
 }
