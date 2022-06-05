@@ -27,13 +27,13 @@ class DeviceSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
       recordProbe.expectMessage(Device.TemperatureRecorded(requestId = 1))
 
       deviceActor ! Device.ReadTemperature(requestId = 2, readProbe.ref)
-      readProbe.expectMessage(Device.RespondTemperature(requestId = 2, Some(42)))
+      readProbe.expectMessage(Device.RespondTemperature(requestId = 2,  deviceId = "device2", Some(42)))
 
       deviceActor ! Device.RecordTemperature(requestId = 3, 55, recordProbe.ref)
       recordProbe.expectMessage(Device.TemperatureRecorded(requestId = 3))
 
       deviceActor ! Device.ReadTemperature(requestId = 4, readProbe.ref)
-      readProbe.expectMessage(Device.RespondTemperature(requestId = 4, Some(55)))
+      readProbe.expectMessage(Device.RespondTemperature(requestId = 4, deviceId = "device2", Some(55)))
     }
   }
 }

@@ -6,7 +6,6 @@ import Device._
 import DeviceManager._
 
 class DeviceManagerSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
-
   "be able to list active devices" in {
     val registeredProbe = createTestProbe[DeviceRegistered]()
     val groupActor = spawn(DeviceGroup("group"))
@@ -23,9 +22,7 @@ class DeviceManagerSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
       groupId = "group",
       deviceListProbe.ref
     )
-    deviceListProbe.expectMessage(
-      ReplyDeviceList(requestId = 0, Set("device1", "device2"))
-    )
+    deviceListProbe.expectMessage(ReplyDeviceList(requestId = 0, Set("device1", "device2")))
   }
 
   "be able to list active devices after one shuts down" in {
@@ -45,9 +42,7 @@ class DeviceManagerSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
       groupId = "group",
       deviceListProbe.ref
     )
-    deviceListProbe.expectMessage(
-      ReplyDeviceList(requestId = 0, Set("device1", "device2"))
-    )
+    deviceListProbe.expectMessage(ReplyDeviceList(requestId = 0, Set("device1", "device2")))
 
     toShutDown ! Passivate
     registeredProbe.expectTerminated(
@@ -63,9 +58,7 @@ class DeviceManagerSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
         groupId = "group",
         deviceListProbe.ref
       )
-      deviceListProbe.expectMessage(
-        ReplyDeviceList(requestId = 1, Set("device2"))
-      )
+      deviceListProbe.expectMessage(ReplyDeviceList(requestId = 1, Set("device2")))
     }
   }
 }
