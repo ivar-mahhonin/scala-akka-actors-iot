@@ -1,24 +1,30 @@
 package com.iot
 
+import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
+import akka.actor.typed.PostStop
+import akka.actor.typed.Signal
 import akka.actor.typed.scaladsl.AbstractBehavior
 import akka.actor.typed.scaladsl.ActorContext
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.scaladsl.LoggerOps
-import akka.actor.typed.{ActorRef, Signal, PostStop, PreRestart, SupervisorStrategy}
 
 object Device {
-  def apply(groupId: String, deviceId: String): Behavior[Command] = 
-      Behaviors.setup(context => new Device(context, groupId, deviceId))
+  def apply(groupId: String, deviceId: String): Behavior[Command] = Behaviors.setup(context => new Device(context, groupId, deviceId))
 
   sealed trait Command
+
   final case class ReadTemperature(requestId: Long, replyTo: ActorRef[RespondTemperature]) extends Command
-  final case class RecordTemperature(requestId: Long, value: Double, replyTo: ActorRef[TemperatureRecorded]) extends Command
   final case class RespondTemperature(requestId: Long, value: Option[Double])
+
+  final case class RecordTemperature(requestId: Long, value: Double, replyTo: ActorRef[TemperatureRecorded]) extends Command
   final case class TemperatureRecorded(requestId: Long)
+
+  case object Passivate extends Command
 }
 
-class Device(context: ActorContext[Device.Command], groupId: String, deviceId: String) extends AbstractBehavior[Device.Command](context) {
+class Device(context: ActorContext[Device.Command], groupId: String, deviceId: String)
+    extends AbstractBehavior[Device.Command](context) {
   import Device._
 
   var lastTemperatureReading: Option[Double] = None
@@ -32,9 +38,12 @@ class Device(context: ActorContext[Device.Command], groupId: String, deviceId: S
         lastTemperatureReading = Some(value)
         replyTo ! TemperatureRecorded(id)
         this
+
       case ReadTemperature(id, replyTo) =>
         replyTo ! RespondTemperature(id, lastTemperatureReading)
-        this  
+        this
+
+      case Passivate => Behaviors.stopped
     }
   }
 
