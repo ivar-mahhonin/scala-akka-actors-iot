@@ -6,3 +6,4 @@ target
 .history
 project/**/metals.sbt
 .scalafmt.conf
+sbt-dist
